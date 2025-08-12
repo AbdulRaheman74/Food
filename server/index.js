@@ -11,7 +11,7 @@ import orderRoute from "./routes/orderRoute.js";
 //config
 const app=express();
 dotenv.config();
-const port=6060;
+const port = process.env.PORT || 6060;
 
 //middlewares
 app.use(express.json());
