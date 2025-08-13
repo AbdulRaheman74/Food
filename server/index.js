@@ -15,7 +15,26 @@ const port = process.env.PORT || 6060;
 
 //middlewares
 app.use(express.json());
-app.use(cors());
+const whitelist = [
+    "http://localhost:5173",              // local frontend
+    "http://localhost:5174",              // local frontend
+    "https://food-inky-xi.vercel.app",   // main frontend
+    "https://food-4kdy.vercel.app"       // admin panel
+];
+
+app.use(cors({
+    origin: function(origin, callback){
+        // origin null ho sakta hai (Postman ya direct browser request)
+        if(!origin || whitelist.indexOf(origin) !== -1){
+            callback(null, true)
+        } else {
+            callback(new Error("Not allowed by CORS"))
+        }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true
+}));
+
 
 app.get("/",(req,res)=>{
     res.send("API is running successfully");
